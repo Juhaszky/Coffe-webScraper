@@ -1,1 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.p-tabview-panels {
+    background-color: gray;
+    padding: 1rem;
+}
+.p-tabview-nav {
+    background-color: gray;
+    border: 0;
+}
+
+.p-tabview {
+    background-color: gray;
+}
+.p-highlight {
+    color: red;
+}
+.p-tabview-nav-link {
+    background-color: rebeccapurple;
+}
+
+.p-tabview-title {
+    background-color: gray;
+    padding: 0.5em;
+    color: rgb(44, 44, 44);
+}
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    
+}
+.p-tabview-ink-bar {
+    border-color: green;
+}
+.p-datatable-table {
+    padding: 2rem;
+}
