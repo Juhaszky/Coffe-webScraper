@@ -6,10 +6,12 @@
     margin: 0;
     padding: 0;
 }
+html, body {
+    height: 100%;
+}
 
 .p-tabview-panels {
     background-color: gray;
-    padding: 1rem;
 }
 .p-tabview-nav {
     background-color: gray;
@@ -38,5 +40,8 @@
     border-color: green;
 }
 .p-datatable-table {
-    padding: 2rem;
+    padding: 1rem;
+}
+a {
+    border-bottom: 1px solid black;
 }
