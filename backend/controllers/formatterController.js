@@ -9,14 +9,26 @@ function processTitle(titleInput) {
       kit = removeDiscountTag(data).trim();
     }
     if (data && data.includes('őrlő')) {
+      console.log('van örlő:', data);
       grinder = removeDiscountTag(data).trim();
     }
   });
   return { title, grinder, kit };
 }
 
-function removeDiscountTag(title) {
-  return title.replace('-Akció!', '');
+function processItemNumber(numberInput) {
+  let itemNumber = '';
+  if (numberInput && numberInput.includes('Cikkszám:')) {
+    itemNumber = numberInput.replace('Cikkszám:', '').trim();
+  }
+  return itemNumber;
 }
 
-module.exports = { processTitle };
+function removeDiscountTag(title) {
+  if (title && title.includes('-Akció!')) {
+    title = title.replace('-Akció!', '');
+  }
+  return title;
+}
+
+module.exports = { processTitle, processItemNumber };
