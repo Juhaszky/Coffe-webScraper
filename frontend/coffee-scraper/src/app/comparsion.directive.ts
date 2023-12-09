@@ -1,28 +1,21 @@
-import {
-  Directive,
-  ElementRef,
-  HostListener,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { Product } from './shared/models/product.model';
 import { TableService } from './home/data-access/table.service';
-import { BehaviorSubject, Subscription, finalize } from 'rxjs';
-import { ProductStorage } from './home/data-access/product.storage';
+import { BehaviorSubject } from 'rxjs';
 
 @Directive({
   selector: '[appComparsion]',
   standalone: true,
 })
 export class ComparsionDirective implements OnDestroy, OnInit {
+  private readonly LOWERED_COLOR = 'green';
+  private readonly ALERT_COLOR = '#D0342C';
   @Input() product!: Product;
   @Input() products: Product[] = [];
-  private subject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private el: ElementRef, private tableService: TableService) {}
   ngOnDestroy(): void {
-    this.subject.unsubscribe();
+    this.tableService.test.unsubscribe();
   }
   ngOnInit(): void {
     this.tableService.test
@@ -33,18 +26,13 @@ export class ComparsionDirective implements OnDestroy, OnInit {
   compareProducts() {
     const currentData = this.product;
     const fetchedData = this.findProductByItemNumber(currentData.itemNumber);
-    //currentData.currentPrice = fetchedData?.currentPrice || '';
     if (currentData && fetchedData) {
       if (
-        this.checkIfPriceLowered(
-          currentData.currentPrice,
-          fetchedData.currentPrice
-        )
+        this.isPriceLowered(currentData.currentPrice, fetchedData.currentPrice)
       ) {
-        this.el.nativeElement.style.backgroundColor = 'green';
-        console.log(this.el.nativeElement);
+        this.el.nativeElement.style.backgroundColor = this.LOWERED_COLOR;
       } else {
-        this.el.nativeElement.style.backgroundColor = '#D0342C';
+        this.el.nativeElement.style.backgroundColor = this.ALERT_COLOR;
       }
       this.updatePrice(currentData, fetchedData);
     }
@@ -53,11 +41,8 @@ export class ComparsionDirective implements OnDestroy, OnInit {
     data.currentPrice = fetchedData.currentPrice;
     return data;
   }
-  private checkIfPriceLowered(oldPrice: string, currentPrice: string): boolean {
-    if (oldPrice > currentPrice) {
-      return true;
-    }
-    return false;
+  private isPriceLowered(oldPrice: string, currentPrice: string): boolean {
+    return oldPrice > currentPrice;
   }
   private findProductByItemNumber(itemNumber: string): Product | null {
     return this.products.find((p) => p.itemNumber === itemNumber) || null;
