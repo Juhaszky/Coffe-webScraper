@@ -1,0 +1,50 @@
+.main-container {
+    display: flex;
+    min-height: 100vh;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background-color: #6F4E37;
+    justify-content: center;
+    align-items: center;
+    margin: auto auto;
+}
+.test-box {
+    min-height: 80vh;
+    width: 80%;
+    background-color: gray;
+    border-radius: 1em;
+    padding: 1rem;
+}
+@media (max-width: 520px) {
+    .test-box {
+      height: 100%;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+}
+@media (max-width: 585px) {
+    .main-container {
+        min-height: 100vh;
+        height: auto;
+    }
+}
+@media (max-width: 972px) {
+    .test-box {
+        
+        
+    }
+}
+
+.tab {
+    width: 100%;
+}
+button {
+    margin: 1rem;
+    padding: 0.5rem;
+    background-color: rgb(173, 173, 173);
+    border-radius: 1em;
+    font-size: 1rem;
+}
+button:hover {
+    cursor: pointer;
+}
