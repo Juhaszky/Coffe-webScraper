@@ -1,6 +1,7 @@
-import { Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy } from '@angular/core';
 import { Product } from './shared/models/product.model';
 import { TableService } from './home/data-access/table.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Directive({
   selector: '[productComparsion]',
@@ -11,18 +12,23 @@ export class ComparsionDirective implements OnDestroy {
   private readonly ALERT_COLOR = 'rgb(208, 52, 44, 0.5)';
   @Input() product!: Product;
   @Input() products: Product[] = [];
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(private el: ElementRef, private tableService: TableService) {
-    this.tableService.doComparsion.subscribe((doCompare) =>
-      doCompare ? this.compareProducts() : false
-    );
+    this.tableService.doComparsion
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((doCompare) => (doCompare ? this.compareProducts() : false));
   }
   ngOnDestroy(): void {
-    this.tableService.doComparsion.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private compareProducts() {
     const currentData = this.product;
+    if (!currentData) {
+      return;
+    }
     const fetchedData = this.findProductByItemNumber(currentData.itemNumber);
 
     if (!currentData || !fetchedData) {
@@ -54,5 +60,4 @@ export class ComparsionDirective implements OnDestroy {
     product = this.products.find((p) => p.itemNumber === itemNumber);
     return product;
   }
-  
 }

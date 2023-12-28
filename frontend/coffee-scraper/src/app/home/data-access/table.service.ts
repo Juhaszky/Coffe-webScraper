@@ -11,4 +11,8 @@ export class TableService {
   doCompare() {
     this.doComparsion.next(true);
   }
+  stopCompare() {
+    this.doComparsion.next(false);
+  }
+  
 }

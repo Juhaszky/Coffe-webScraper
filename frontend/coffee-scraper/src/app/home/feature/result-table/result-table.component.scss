@@ -1,8 +1,11 @@
+$main-fontColor: black;
+$data-fontColor: rgb(200, 200, 200);
 .test {
     padding: 1rem;
 }
 .p-table {
     padding: 2rem;
+    color: red;
 }
 th {
     background-color: gray;
@@ -11,6 +14,10 @@ td, th {
     padding: 0.2rem;
     text-align: left;
     border-bottom: 1px solid black;
+    color: $data-fontColor;
+}
+th {
+    color: $main-fontColor;
 }
 tr {
     background-color: gray;

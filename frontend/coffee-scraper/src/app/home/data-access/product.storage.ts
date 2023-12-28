@@ -7,11 +7,8 @@ import { Product } from 'src/app/shared/models/product.model';
   providedIn: 'root',
 })
 export class ProductStorage {
-  products$: Observable<Product[]>;
-  oldProducts$: Observable<Product[]>;
+  products: Product[] = [];
+  oldProducts: Product[] = [];
   comparedProducts$!: Observable<Product[]>;
-  constructor(private homeService: HomeService) {
-    this.products$ = this.homeService.fetchData();
-    this.oldProducts$ = this.homeService.fetchOldData();
-  }
+  constructor(private homeService: HomeService) {}
 }
