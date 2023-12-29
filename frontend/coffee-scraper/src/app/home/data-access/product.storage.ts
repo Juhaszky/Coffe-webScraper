@@ -10,5 +10,5 @@ export class ProductStorage {
   products: Product[] = [];
   oldProducts: Product[] = [];
   comparedProducts$!: Observable<Product[]>;
-  constructor(private homeService: HomeService) {}
+  constructor() {}
 }

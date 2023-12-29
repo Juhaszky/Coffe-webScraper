@@ -1,12 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { HomeService } from '../../data-access/home.service';
-import { ComparsionDirective } from 'src/app/comparsion.directive';
+import { ComparsionDirective } from 'src/app/comparison.directive';
 import { TableService } from '../../data-access/table.service';
 import { Product } from 'src/app/shared/models/product.model';
 import { ProductStorage } from '../../data-access/product.storage';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'result-table',
