@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="col">
+<div class="grid">
+  <div class="{{ compared ? 'col-10' : 'col-12' }}">
     <p-table
       [value]="oldProducts"
       styleClass="test"
@@ -23,7 +23,10 @@
       </ng-template>
     </p-table>
   </div>
-  <div class="col">
+  <div *ngIf="compared" class="col-2 m-auto justify-content-center">
+    <color-helper></color-helper>
+  </div>
+  <div class="col-12">
     <div class="buttons-box">
       <button class="btn" [disabled]="compared" (click)="checkUpdatedPrices()">
         Compare Prices

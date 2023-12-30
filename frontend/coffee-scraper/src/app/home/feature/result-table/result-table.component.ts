@@ -6,11 +6,18 @@ import { ComparsionDirective } from 'src/app/comparison.directive';
 import { TableService } from '../../data-access/table.service';
 import { Product } from 'src/app/shared/models/product.model';
 import { ProductStorage } from '../../data-access/product.storage';
+import { ColorHelperComponent } from './color-helper/color-helper.component';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'result-table',
   standalone: true,
-  imports: [CommonModule, TableModule, ComparsionDirective],
+  imports: [
+    CommonModule,
+    TableModule,
+    ComparsionDirective,
+    ColorHelperComponent,
+  ],
   providers: [HomeService],
   templateUrl: './result-table.component.html',
   styleUrls: ['./result-table.component.scss'],
@@ -28,13 +35,30 @@ export class ResultTableComponent implements OnInit {
     this.oldProducts = this.productStorage.oldProducts;
   }
   ngOnInit(): void {
-    this.homeService.fetchOldData().subscribe((p) => {
-      this.oldProducts = p;
-      this.productStorage.oldProducts = p;
+    this.fetchOldProducts();
+    this.fetchProducts();
+  }
+
+  private fetchOldProducts(): void {
+    this.homeService.fetchOldData().subscribe({
+      next: (p) => {
+        this.oldProducts = p;
+        this.productStorage.oldProducts = p;
+      },
+      error: (error) => {
+        throwError(() => new Error('Error fetching old products: ', error));
+      },
     });
-    this.homeService.fetchData().subscribe((p) => {
-      this.products = p;
-      this.productStorage.products = p;
+  }
+  private fetchProducts(): void {
+    this.homeService.fetchData().subscribe({
+      next: (p) => {
+        this.products = p;
+        this.productStorage.products = p;
+      },
+      error: (error) => {
+        throwError(() => new Error('Error fetching products: ', error));
+      },
     });
   }
 

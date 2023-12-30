@@ -2,11 +2,12 @@ import { Directive, ElementRef, Input, OnDestroy } from '@angular/core';
 import { Product } from './shared/models/product.model';
 import { TableService } from './home/data-access/table.service';
 import { Subject, takeUntil } from 'rxjs';
+import { ComparisonColors } from './shared/configs/colors.config';
 
 export enum PriceState {
   Increased = 'Increased',
   Decreased = 'Decreased',
-  Equal = 'Equal',
+  Equals = 'Equal',
 }
 
 @Directive({
@@ -14,9 +15,6 @@ export enum PriceState {
   standalone: true,
 })
 export class ComparsionDirective implements OnDestroy {
-  private readonly DECREASED_COLOR = 'rgb(46, 140, 14, 0.5)';
-  private readonly INCREASED_COLOR = 'rgb(208, 52, 44, 0.5)';
-  private readonly EQUALS_COLOR = 'rgb(255,165,0, 0.5)';
   @Input() product!: Product;
   @Input() products: Product[] = [];
   private destroy$: Subject<void> = new Subject<void>();
@@ -55,15 +53,15 @@ export class ComparsionDirective implements OnDestroy {
 
     switch (priceMovement) {
       case PriceState.Increased: {
-        rowElement.style.backgroundColor = this.INCREASED_COLOR;
+        rowElement.style.backgroundColor = ComparisonColors.INCREASED;
         break;
       }
       case PriceState.Decreased: {
-        rowElement.style.backgroundColor = this.DECREASED_COLOR;
+        rowElement.style.backgroundColor = ComparisonColors.DECREASED;
         break;
       }
-      case PriceState.Equal: {
-        rowElement.style.backgroundColor = this.EQUALS_COLOR;
+      case PriceState.Equals: {
+        rowElement.style.backgroundColor = ComparisonColors.EQUALS;
         break;
       }
     }
@@ -83,7 +81,7 @@ export class ComparsionDirective implements OnDestroy {
     } else if (oldPrice < currentPrice) {
       return PriceState.Decreased;
     } else {
-      return PriceState.Equal;
+      return PriceState.Equals;
     }
   }
 

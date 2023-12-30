@@ -33,9 +33,6 @@ html, body {
     padding: 0.5em;
     color: rgb(44, 44, 44);
 }
-.p-tabview .p-tabview-nav li .p-tabview-nav-link {
-    
-}
 .p-tabview-ink-bar {
     border-color: green;
 }
@@ -44,4 +41,7 @@ html, body {
 }
 a {
     border-bottom: 1px solid black;
+}
+.p-tooltip {
+    padding: 2rem;
 }
