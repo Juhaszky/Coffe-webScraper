@@ -21,7 +21,7 @@ import { TooltipModule } from 'primeng/tooltip';
     `
       .color-helper-box {
         border: 1px solid #5a5a5a;
-        padding: 1em;
+        padding: 0.5em;
         border-radius: 1em;
         text-align: center;
       }

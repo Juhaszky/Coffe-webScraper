@@ -6,6 +6,7 @@ $data-fontColor: rgb(200, 200, 200);
 .p-table {
     padding: 2rem;
     color: red;
+    overflow-x: scroll;
 }
 th {
     background-color: gray;

@@ -30,10 +30,7 @@ export class ResultTableComponent implements OnInit {
     public homeService: HomeService,
     private productStorage: ProductStorage,
     private tService: TableService
-  ) {
-    this.products = this.productStorage.products;
-    this.oldProducts = this.productStorage.oldProducts;
-  }
+  ) {}
   ngOnInit(): void {
     this.fetchOldProducts();
     this.fetchProducts();
