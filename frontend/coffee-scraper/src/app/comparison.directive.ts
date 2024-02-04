@@ -24,28 +24,29 @@ export class ComparsionDirective implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((doCompare) => (doCompare ? this.compareProducts() : false));
   }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   private compareProducts() {
-    const currentData = this.product;
-    if (!currentData) {
+    const currentProduct = this.product;
+    if (!currentProduct) {
       return;
     }
-    const fetchedData = this.findProductByItemNumber(currentData.itemNumber);
-
-    if (!currentData || !fetchedData) {
+    const fetchedProduct = this.findProductByItemNumber(
+      currentProduct.itemNumber
+    );
+    if (!currentProduct || !fetchedProduct) {
       return;
     }
-
     const priceMovement = this.checkPriceMovement(
-      currentData.currentPrice,
-      fetchedData.currentPrice
+      currentProduct.currentPrice,
+      fetchedProduct.currentPrice
     );
     this.setColorByPriceMovement(priceMovement);
-    this.updatePrice(currentData, fetchedData);
+    this.updatePrice(currentProduct, fetchedProduct);
   }
 
   private setColorByPriceMovement(priceMovement: PriceState): void {
@@ -67,19 +68,19 @@ export class ComparsionDirective implements OnDestroy {
     }
   }
 
-  private updatePrice(data: Product, fetchedData: Product) {
-    data.currentPrice = fetchedData.currentPrice;
+  private updatePrice(data: Product, fetchedProduct: Product) {
+    data.currentPrice = fetchedProduct.currentPrice;
     return data;
   }
 
   private checkPriceMovement(
-    oldPrice: string,
-    currentPrice: string
+    oldPrice: number,
+    currentPrice: number
   ): PriceState {
     if (oldPrice > currentPrice) {
-      return PriceState.Increased;
-    } else if (oldPrice < currentPrice) {
       return PriceState.Decreased;
+    } else if (oldPrice < currentPrice) {
+      return PriceState.Increased;
     } else {
       return PriceState.Equals;
     }

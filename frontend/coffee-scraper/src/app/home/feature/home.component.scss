@@ -1,25 +1,26 @@
 .main-container {
     display: flex;
     min-height: 100vh;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+
     background-color: #6F4E37;
     justify-content: center;
     align-items: center;
     margin: auto auto;
 }
 .data-box {
-    min-height: 80vh;
-    width: 80%;
+    min-height: 90vh;
+    width: 90%;
     background-color: gray;
     border-radius: 1em;
-    padding: 1rem;
+    height: 100%;
+    padding: 1em;
 }
 @media (max-width: 520px) {
     .data-box {
       height: 100%;
       margin-top: 1rem;
       margin-bottom: 1rem;
+      padding: 0.2rem;
     }
 }
 @media (max-width: 585px) {
