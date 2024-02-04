@@ -24,12 +24,7 @@ tr {
     background-color: gray;
     line-height: 1.5em;
 }
-button {
-    background-color: gray;
-    border: 1px solid rgb(68, 68, 68);
-    border-radius: 1em;
-    padding: 0.5rem;
-}
+
 .buttons-box {
     margin: auto;
     width: 30%;
@@ -39,6 +34,7 @@ button {
         cursor: pointer;
     }
 }
+
 
 @media (max-width: 1040px) {
     .buttons-box {

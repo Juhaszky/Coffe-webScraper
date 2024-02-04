@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { HomeService } from '../../data-access/home.service';
@@ -7,7 +7,10 @@ import { TableService } from '../../data-access/table.service';
 import { Product } from 'src/app/shared/models/product.model';
 import { ProductStorage } from '../../data-access/product.storage';
 import { ColorHelperComponent } from './color-helper/color-helper.component';
-import { throwError } from 'rxjs';
+import { Subscription, delay, finalize, tap } from 'rxjs';
+import { ButtonModule } from 'primeng/button';
+import { CurrencyPipe } from 'src/app/shared/pipes/currency.pipe';
+import { ErrorDialogComponent } from 'src/app/shared/errors/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'result-table',
@@ -17,15 +20,20 @@ import { throwError } from 'rxjs';
     TableModule,
     ComparsionDirective,
     ColorHelperComponent,
+    ButtonModule,
+    CurrencyPipe,
+    ErrorDialogComponent,
   ],
   providers: [HomeService],
   templateUrl: './result-table.component.html',
   styleUrls: ['./result-table.component.scss'],
 })
-export class ResultTableComponent implements OnInit {
+export class ResultTableComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   oldProducts: Product[] = [];
   compared: boolean = false;
+  private oldProductSubscription!: Subscription;
+  private productSubscription!: Subscription;
   constructor(
     public homeService: HomeService,
     private productStorage: ProductStorage,
@@ -33,41 +41,60 @@ export class ResultTableComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.fetchOldProducts();
-    this.fetchProducts();
+  }
+  ngOnDestroy(): void {
+    this.oldProductSubscription.unsubscribe();
+    this.productSubscription.unsubscribe();
   }
 
   private fetchOldProducts(): void {
-    this.homeService.fetchOldData().subscribe({
-      next: (p) => {
-        this.oldProducts = p;
-        this.productStorage.oldProducts = p;
-      },
-      error: (error) => {
-        throwError(() => new Error('Error fetching old products: ', error));
-      },
-    });
+    this.oldProductSubscription = this.homeService
+      .fetchOldData()
+      .pipe(
+        tap((oldProducts) => {
+          this.oldProducts = oldProducts;
+          this.productStorage.oldProducts = oldProducts;
+        })
+      )
+      .subscribe({
+        error: (error) => {
+          //console.log(error);
+          throw error;
+        },
+      });
   }
   private fetchProducts(): void {
-    this.homeService.fetchData().subscribe({
-      next: (p) => {
-        this.products = p;
-        this.productStorage.products = p;
-      },
-      error: (error) => {
-        throwError(() => new Error('Error fetching products: ', error));
-      },
-    });
+    this.productSubscription = this.homeService
+      .fetchData()
+      .pipe(
+        tap((p: Product[]) => {
+          this.products = p;
+          this.productStorage.products = p;
+        }),
+        delay(1),
+        finalize(() => {
+          this.productStorage.tmpSubject.next(this.products);
+          this.doCompare();
+        })
+      )
+      .subscribe({
+        error: (error) => {
+          throw error;
+        },
+      });
   }
 
-  checkUpdatedPrices() {
+  doCompare() {
     this.compared = true;
     this.tService.doCompare();
   }
+
+  checkUpdatedPrices() {
+    this.fetchProducts();
+  }
+
   resetComparsion() {
-    this.homeService.fetchOldData().subscribe((op) => {
-      this.oldProducts = op;
-      this.productStorage.oldProducts = op;
-    });
+    this.fetchOldProducts();
     this.compared = false;
   }
 }
