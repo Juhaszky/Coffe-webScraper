@@ -9,7 +9,7 @@ import { TooltipModule } from 'primeng/tooltip';
   imports: [CommonModule, TooltipModule],
   template: `
     <div class="color-helper-box">
-      <div class="line-row" *ngFor="let color of colors">
+      <div class="flex mb-1" *ngFor="let color of colors">
         <h3 pTooltip="{{ color.toolTip }}">
           <span style="background-color:{{ color.color }}"></span
           >{{ color.name }}
@@ -20,7 +20,7 @@ import { TooltipModule } from 'primeng/tooltip';
   styles: [
     `
       .color-helper-box {
-        border: 1px solid #5a5a5a;
+        box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.2);
         padding: 0.5em;
         border-radius: 1em;
         text-align: center;
@@ -40,12 +40,6 @@ import { TooltipModule } from 'primeng/tooltip';
         width: 1rem;
         margin-right: 0.5rem;
         max-height: 1px;
-      }
-      .line-row {
-        display: flex;
-        justify-content: left;
-        flex-direction: row;
-        margin-bottom: 0.5rem;
       }
     `,
   ],
